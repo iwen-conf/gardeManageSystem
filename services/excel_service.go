@@ -183,7 +183,12 @@ func SaveStudentsToFile() {
 		fmt.Println("Failed to create students.json file:", err)
 		return
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err = file.Close()
+		if err != nil {
+
+		}
+	}(file)
 
 	encoder := json.NewEncoder(file)
 	if err := encoder.Encode(models.StudentMap); err != nil {
@@ -196,7 +201,12 @@ func LoadStudentsFromFile() {
 		fmt.Println("Failed to open students.json file:", err)
 		return
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err = file.Close()
+		if err != nil {
+
+		}
+	}(file)
 
 	decoder := json.NewDecoder(file)
 	if err := decoder.Decode(&models.StudentMap); err != nil {
@@ -285,14 +295,14 @@ func calculateImprovements(student *models.Student) map[string]float64 {
 
 func findStrongestAndWeakestSubjects(averages map[string]float64) map[string]string {
 	var strongest, weakest string
-	var max, min float64
+	var gradeMax, gradeMin float64
 	for subject, average := range averages {
-		if average > max || strongest == "" {
-			max = average
+		if average > gradeMax || strongest == "" {
+			gradeMax = average
 			strongest = subject
 		}
-		if average < min || weakest == "" {
-			min = average
+		if average < gradeMin || weakest == "" {
+			gradeMin = average
 			weakest = subject
 		}
 	}
