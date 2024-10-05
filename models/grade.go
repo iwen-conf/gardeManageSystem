@@ -6,9 +6,7 @@
 
 package models
 
-type Student struct {
-	Name      string  `json:"name"`
-	ID        string  `json:"id"`
+type Grade struct {
 	Chinese   float64 `json:"chinese"`
 	Math      float64 `json:"math"`
 	English   float64 `json:"english"`
@@ -19,3 +17,10 @@ type Student struct {
 	Total     float64 `json:"total"`
 	ExamName  string  `json:"examName"`
 }
+type Student struct {
+	Name   string  `json:"name"`
+	ID     string  `json:"id"`
+	Grades []Grade `json:"grades"` // 新增的字段，存储多个成绩记录
+}
+
+var StudentMap map[string]*Student

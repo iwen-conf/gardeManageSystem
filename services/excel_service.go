@@ -177,58 +177,6 @@ func calculateDistribution(students []*models.Student) map[string]map[string]map
 	return distribution
 }
 
-func calculateStudentAverages(student *models.Student) map[string]float64 {
-	sums := make(map[string]float64)
-	counts := make(map[string]int)
-
-	for _, grade := range student.Grades {
-		sums["chinese"] += grade.Chinese
-		sums["math"] += grade.Math
-		sums["english"] += grade.English
-		sums["chemistry"] += grade.Chemistry
-		sums["physics"] += grade.Physics
-		sums["geography"] += grade.Geography
-		sums["biology"] += grade.Biology
-
-		counts["chinese"]++
-		counts["math"]++
-		counts["english"]++
-		counts["chemistry"]++
-		counts["physics"]++
-		counts["geography"]++
-		counts["biology"]++
-	}
-
-	averages := make(map[string]float64)
-	for subject, sum := range sums {
-		if counts[subject] > 0 {
-			averages[subject] = sum / float64(counts[subject])
-		}
-	}
-
-	return averages
-}
-
-func calculateStudentImprovement(student *models.Student) map[string]float64 {
-	improvement := make(map[string]float64)
-	if len(student.Grades) < 2 {
-		return improvement
-	}
-
-	firstGrade := student.Grades[0]
-	lastGrade := student.Grades[len(student.Grades)-1]
-
-	improvement["chinese"] = lastGrade.Chinese - firstGrade.Chinese
-	improvement["math"] = lastGrade.Math - firstGrade.Math
-	improvement["english"] = lastGrade.English - firstGrade.English
-	improvement["chemistry"] = lastGrade.Chemistry - firstGrade.Chemistry
-	improvement["physics"] = lastGrade.Physics - firstGrade.Physics
-	improvement["geography"] = lastGrade.Geography - firstGrade.Geography
-	improvement["biology"] = lastGrade.Biology - firstGrade.Biology
-
-	return improvement
-}
-
 func SaveStudentsToFile() {
 	file, err := os.Create("./uploads/students.json")
 	if err != nil {
